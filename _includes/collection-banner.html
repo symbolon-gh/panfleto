@@ -63,6 +63,49 @@
         </div>
     </div>
    </div>
+{% if page.layout == 'home-infographic' %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const banner = document.getElementById('home-banner');
+
+    const imagenes = [
+        {% for archivo in site.static_files %}
+            {% assign ruta = archivo.path | downcase %}
+            {% assign extension = ruta | split: '.' | last %}
+            {% if ruta contains '/objects/' %}
+                {% if extension == 'jpg' or extension == 'jpeg' or extension == 'png' or extension == 'webp' %}
+                    {{ archivo.path | relative_url | jsonify }},
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    ];
+
+    if (!banner || imagenes.length === 0) return;
+
+    let anterior = -1;
+
+    function cambiarImagen() {
+        let siguiente = Math.floor(Math.random() * imagenes.length);
+
+        if (imagenes.length > 1 && siguiente === anterior) {
+            siguiente = (siguiente + 1) % imagenes.length;
+        }
+
+        banner.style.backgroundImage = 'url("' + imagenes[siguiente] + '")';
+
+        anterior = siguiente;
+    }
+
+    cambiarImagen();
+
+    if (imagenes.length > 1) {
+        setInterval(cambiarImagen, 10000);
+    }
+
+});
+</script>
+{% endif %}
 {%- else -%}
 <div class="container">
     <div class="row align-items-center">
