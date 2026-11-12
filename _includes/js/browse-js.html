@@ -92,13 +92,24 @@ function makeCard(obj) {
     {% endunless %}{% endfor %}
     card += '</p>';
     
-    // Media type badge
-    if(obj.display_template) {
-        const mediaIcon = getIcon(obj.display_template, obj.format, "hidden");
-        card += `<p class="card-text"><small><a class="btn btn-sm btn-outline-secondary" href="{{ page.url | relative_url }}#display_template:${encodeURIComponent(obj.display_template)}">${obj.display_template.toUpperCase().replace("_"," ")} ${mediaIcon}</a></small></p>`;
-    }
     
-    card += `<hr><a href="${itemHref}" class="btn btn-sm btn-light" title="link to ${obj.title}">View Full Record</a></div></div></div>`;
+    // Media type badge
+    if (obj.display_template) {
+        const mediaIcon = getIcon(obj.display_template, obj.format, 'hidden');
+        const mediaLabels = {
+            image: 'IMAGEN',
+            multiple: 'ANVERSO Y REVERSO',
+            compound_object: 'OBJETO COMPUESTO',
+            record: 'FICHA',
+            audio: 'AUDIO',
+            video: 'VIDEO',
+            pdf: 'PDF',
+            panorama: 'PANORAMA'
+        };
+        const mediaLabel = mediaLabels[obj.display_template] || obj.display_template.toUpperCase().replace(/_/g, ' ');
+        card += `<p class="card-text"><small><a class="btn btn-sm btn-outline-secondary" href="{{ page.url | relative_url }}#display_template:${encodeURIComponent(obj.display_template)}">${mediaLabel} ${mediaIcon}</a></small></p>`;
+    }
+    card += `<hr><a href="${itemHref}" class="btn btn-sm btn-light" title="Ver ${obj.title}">Ver ficha completa</a></div></div></div>`;
     return card;
 }
 
