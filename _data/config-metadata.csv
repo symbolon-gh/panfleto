@@ -1,15 +1,32 @@
 field,display_name,browse_link,external_link,dc_map,schema_map
-title,Title,,,DCTERMS.title,headline
-creator,Creator,,,DCTERMS.creator,creator
-date,Date Created,,,DCTERMS.date,dateCreated
-description,Description,,,DCTERMS.description,description
-subject,Subjects,true,,DCTERMS.subject,keywords
-location,Location,,,DCTERMS.coverage,contentLocation
-latitude,Latitude,,,,
-longitude,Longitude,,,,
-source,Source,,,,
-identifier,Source Identifier,,,,
-type,Type,,,DCTERMS.type,
-format,Format,,,,encodingFormat
-language,Language,,,DCTERMS.language,
-rightsstatement,,,,DCTERMS.rights,license
+title,Título,,,DCTERMS.title,headline
+creator,Autoría,,,DCTERMS.creator,creator
+date,Fecha,,,DCTERMS.date,dateCreated
+description,Descripción,,,DCTERMS.description,description
+subject,Tema,true,,DCTERMS.subject,keywords
+periodo,Período,,,,
+actor_emplazado,Actor emplazado,,,,
+Sujeto histórico,Sujeto histórico,,,,
+item_information,Tipo de pieza,,,,
+identifier,Identificador de origen,,,,
+objectid,Código de registro,,,,
+uso_imagen_texto,Uso de imagen y texto,,,,
+impresion,Impresión,,,,
+Elementos visuales,Elementos visuales,,,,
+Transcripción,Transcripción,,,,
+Dimensiones (ancho x alto),Dimensiones (ancho × alto),,,,
+Papel,Papel,,,,
+Corte,Corte,,,,
+Tipo de tipografía,Tipo de tipografía,,,,
+Tamaño de tipografía,Tamaño de tipografía,,,,
+Color del soporte,Color del soporte,,,,
+Color de la tinta,Color de la tinta,,,,
+Estado de conservación,Estado de conservación,,,,
+relation,Relación entre caras,,,,
+Sobre,Sobre,,,,
+Caja,Caja,,,,
+format,Formato digital,,,,encodingFormat
+location,Lugar,,,DCTERMS.coverage,contentLocation
+latitude,Latitud,,,,
+longitude,Longitud,,,,
+language,Idioma,,,DCTERMS.language,
