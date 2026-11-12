@@ -1,74 +1,160 @@
 ---
-# "Timeline" page
 layout: page
 custom-foot: js/timeline-js.html
 ---
-{%- assign field = site.data.theme.timeline-field | default: page.timeline-field | default: "date" -%}
-{% if site.data.theme.timeline-child-objects == true %}
-{%- assign items = site.data[site.metadata] | where_exp: 'item','item.objectid' -%}
-{% else %}
-{%- assign items = site.data[site.metadata] | where_exp: 'item','item.objectid and item.parentid == nil' -%}
-{% endif %}
-{%- assign items = items | where_exp: 'item','item[field]' | sort: field -%}
-{%- assign raw-dates = items | map: field | compact | uniq -%}
-{%- capture clean-years -%}{% for date in raw-dates %}{% if date contains "-" %}{{ date | strip | split: "-" | first }}{% elsif date contains "/" %}{{ date | strip | split: "/" | last }}{% else %}{{ date | strip }}{% endif %}{% unless forloop.last %};{% endunless %}{%- endfor -%}{%- endcapture -%}
-{%- assign uniqueYears = clean-years | replace: ";;",";" | split: ";" | compact | uniq | sort -%}
-{%- if site.data.theme.year-navigation -%}
-{%- assign navYears = site.data.theme.year-navigation | split: ";" -%}
-{%- elsif site.data.theme.year-nav-increment -%}
-{%- capture navYears -%}
-{%- for i in uniqueYears -%}{%- assign t = i | modulo: site.data.theme.year-nav-increment -%}
-{%- if t == 0 -%}{{ i }}{% unless forloop.last %};{% endunless %}{% endif %}{% endfor %}{%- endcapture -%}
-{%- assign navYears = navYears | split: ";" -%}
-{%- endif -%}
-{%- if navYears.size > 1 -%}
-<div class="dropdown float-end" id="year-nav">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="yearButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Year
-    </button>
-    <div class="dropdown-menu" aria-labelledby="yearButton">
-        {% for y in navYears %}
-        <a class="dropdown-item" href="#y{{ y }}">{{ y }}</a>{% endfor %}
-    </div>
-</div>
-{%- endif -%}
+{%- assign timeline_items = site.data[site.metadata] | where_exp: 'item', 'item.objectid' -%}
+{%- unless site.data.theme.timeline-child-objects == true -%}
+  {%- assign timeline_items = timeline_items | where_exp: 'item', 'item.parentid == nil' -%}
+{%- endunless -%}
 
 {{ content }}
 
-<h3><a href="#y{{ uniqueYears | first }}">{{ uniqueYears | first }}</a> to <a href="#y{{ uniqueYears | last }}">{{ uniqueYears | last }}</a></h3>
-
+<div id="timeline-year-nav" class="mb-3"></div>
+<h3 id="timeline-period" class="mb-4"></h3>
 <table id="timeline" class="table table-striped">
-    <tbody>
-        {% for year in uniqueYears %}
-        <tr id="y{{ year }}">
-            <th>
-                <h3>{{ year }}</h3>
-            </th>
-            <td>
-                <div class="row">
-                    {%- assign inYear = items | where_exp: 'item', 'item[field] contains year' -%}
-                    {% for item in inYear %}
-                    <div class="col-lg-4 col-md-6">
-                        <a href="{{ '/items/' | relative_url }}{% if item.parentid %}{{ item.parentid }}.html#{{ item.objectid }}{% else %}{{ item.objectid }}.html{% endif %}" >
-                            {% if item.image_thumb %}
-                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="{{ item.image_thumb | relative_url }}" alt="{{ item.image_alt_text | default: item.description | default: item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }}">
-                            {% else %}
-                            <div class="card"> 
-                                <div class="card-body text-center">
-                                    <div class="h5 text-dark">{{ item.title }}</div>
-                                    <svg class="bi timeline-thumb text-body" fill="currentColor" aria-hidden="true">
-                                        {%- assign icon_template = item.display_template | default: item.format -%}
-                                        <use href="{{ '/assets/css/cb-icons.svg' | relative_url }}#{% if icon_template contains 'image' %}icon-image{% elsif icon_template contains 'pdf' %}icon-pdf{% elsif icon_template contains 'audio' %}icon-audio{% elsif icon_template contains 'video' %}icon-video{% elsif icon_template contains 'panorama' %}icon-panorama{% elsif icon_template contains 'compound' %}icon-compound-object{% elsif icon_template contains 'multiple' %}icon-multiple{% else %}icon-default{% endif %}"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <tbody id="timeline-rows"></tbody>
 </table>
+<noscript>La cronolog&iacute;a interactiva requiere JavaScript.</noscript>
+
+<script>
+(function () {
+  "use strict";
+  // Los textos y fechas provienen del CSV original; no se modifica ningun metadato.
+  const records = [
+  {%- for item in timeline_items %}
+    {
+      id: {{ item.objectid | jsonify }},
+      parent: {{ item.parentid | default: '' | jsonify }},
+      title: {{ item.title | default: '' | jsonify }},
+      date: {{ item.date | default: '' | jsonify }},
+      image: {% if item.image_thumb %}{{ item.image_thumb | relative_url | jsonify }}{% else %}null{% endif %},
+      alt: {{ item.image_alt_text | default: item.description | default: item.title | default: '' | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+  {%- endfor %}
+  ];
+  const itemsBase = {{ '/items/' | relative_url | jsonify }};
+
+  function parseDate(value) {
+    const raw = String(value || '').trim();
+    if (!raw || /^S\s*\/\s*F$/i.test(raw)) {
+      return { year: null, rank: 4, month: 0, day: 0 };
+    }
+    const approximate = /^ca\.\s*/i.test(raw);
+    const normalized = raw.replace(/^ca\.\s*/i, '').trim();
+    let year, month = 0, day = 0, precision = 2;
+    let match = normalized.match(/^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/);
+    if (match) {
+      year = Number(match[1]);
+      if (match[2]) { month = Number(match[2]); precision = 1; }
+      if (match[3]) { day = Number(match[3]); precision = 0; }
+    } else {
+      // Un registro del inventario utiliza MM-AAAA (06-1987).
+      match = normalized.match(/^(\d{1,2})-(\d{4})$/);
+      if (!match) return { year: null, rank: 5, month: 0, day: 0 };
+      year = Number(match[2]);
+      month = Number(match[1]);
+      precision = 1;
+    }
+    if (year < 1000 || year > 9999 || month < 0 || month > 12 || day < 0 || day > 31) {
+      return { year: null, rank: 5, month: 0, day: 0 };
+    }
+    return { year, rank: approximate ? 3 : precision, month, day };
+  }
+
+  const prepared = records.map(item => ({ ...item, temporal: parseDate(item.date) }));
+  prepared.sort((a, b) =>
+    (a.temporal.year ?? 99999) - (b.temporal.year ?? 99999) ||
+    a.temporal.rank - b.temporal.rank ||
+    a.temporal.month - b.temporal.month ||
+    a.temporal.day - b.temporal.day ||
+    String(a.id).localeCompare(String(b.id), 'es')
+  );
+
+  const uniqueYears = [...new Set(prepared.filter(x => x.temporal.year !== null).map(x => x.temporal.year))];
+  const hasNoDate = prepared.some(x => x.temporal.year === null);
+  const period = document.getElementById('timeline-period');
+  if (uniqueYears.length) {
+    period.textContent = uniqueYears[0] + ' a ' + uniqueYears[uniqueYears.length - 1];
+  } else {
+    period.textContent = 'Sin fechas identificadas';
+  }
+
+  const nav = document.getElementById('timeline-year-nav');
+  if (uniqueYears.length > 1) {
+    const wrap = document.createElement('div');
+    wrap.className = 'dropdown text-end';
+    const toggle = document.createElement('button');
+    toggle.className = 'btn btn-primary dropdown-toggle';
+    toggle.type = 'button';
+    toggle.dataset.bsToggle = 'dropdown';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = 'Ir al a\u00f1o';
+    const menu = document.createElement('div');
+    menu.className = 'dropdown-menu dropdown-menu-end';
+    uniqueYears.forEach(year => {
+      const link = document.createElement('a');
+      link.className = 'dropdown-item';
+      link.href = '#y' + year;
+      link.textContent = String(year);
+      menu.appendChild(link);
+    });
+    if (hasNoDate) {
+      const link = document.createElement('a');
+      link.className = 'dropdown-item';
+      link.href = '#sin-fecha';
+      link.textContent = 'Sin fecha';
+      menu.appendChild(link);
+    }
+    wrap.append(toggle, menu);
+    nav.appendChild(wrap);
+  }
+
+  const tbody = document.getElementById('timeline-rows');
+  function createRecordCard(item) {
+    const column = document.createElement('div');
+    column.className = 'col-lg-4 col-md-6 mb-3';
+    const a = document.createElement('a');
+    a.href = itemsBase + (item.parent ? item.parent + '.html#' + item.id : item.id + '.html');
+    if (item.image) {
+      const img = document.createElement('img');
+      img.className = 'lazyload img-thumbnail timeline-thumb';
+      img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 3 2%22%3E%3C/svg%3E';
+      img.dataset.src = item.image;
+      img.alt = item.alt || item.title;
+      img.title = item.title;
+      img.setAttribute('data-bs-toggle', 'tooltip');
+      a.appendChild(img);
+    } else {
+      const fallback = document.createElement('div');
+      fallback.className = 'card card-body h5 text-dark';
+      fallback.textContent = item.title;
+      a.appendChild(fallback);
+    }
+    column.appendChild(a);
+    const date = document.createElement('div');
+    date.className = 'small text-muted mt-1';
+    date.textContent = item.date || 'Sin fecha';
+    column.appendChild(date);
+    return column;
+  }
+  function createYearRow(year, list) {
+    const tr = document.createElement('tr');
+    tr.id = year === null ? 'sin-fecha' : 'y' + year;
+    const th = document.createElement('th');
+    const heading = document.createElement('h3');
+    heading.textContent = year === null ? 'Sin fecha' : String(year);
+    th.appendChild(heading);
+    tr.appendChild(th);
+    const td = document.createElement('td');
+    const row = document.createElement('div');
+    row.className = 'row';
+    list.forEach(item => row.appendChild(createRecordCard(item)));
+    td.appendChild(row);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
+
+  uniqueYears.forEach(year => createYearRow(year, prepared.filter(x => x.temporal.year === year)));
+  if (hasNoDate) createYearRow(null, prepared.filter(x => x.temporal.year === null));
+})();
+</script>
