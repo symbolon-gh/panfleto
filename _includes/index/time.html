@@ -1,14 +1,32 @@
+{% comment %}
+  Panfleto: intervalo temporal. Conserva el campo date original y extrae solo anios validos.
+  Admite AAAA, AAAA-MM, AAAA-MM-DD, MM-AAAA, ca.AAAA y S/F.
+{% endcomment %}
 {% assign date_field = include.date_field | default: 'date' %}
-{% if site.data.theme.timeline-child-objects == true %}
-{%- assign date-items = site.data[site.metadata] | where_exp: 'item','item.objectid' -%}
-{% else %}
-{%- assign date-items = site.data[site.metadata] | where_exp: 'item','item.objectid' -%}
-{%- assign date-items = date-items | where_exp: 'item','item.parentid == nil' -%}
-{% endif %}
-{%- assign raw-dates = date-items | map: date_field | compact | uniq -%}
-{%- capture clean-years -%}{% for date in raw-dates %}{% if date contains '-' %}{{ date | strip | split: '-' | first }}{% elsif date contains '/' %}{{ date | strip | split: '/' | last }}{% else %}{{ date | strip }}{% endif %}{% unless forloop.last %};{% endunless %}{% endfor %}{%- endcapture -%}
-{%- assign date-range = clean-years | remove: ' ' | split: ';' | uniq | sort -%}
-<div class="card mb-3"><div class="card-body">
-  <{{ include.heading_level | default: 'h2' | strip }} class="card-title h5">Período temporal</{{ include.heading_level | default: 'h2' | strip }}>
-  <p class="card-text h5">{{ date-range | first }} a {{ date-range | last }}<br><a href="{{ '/timeline.html' | relative_url }}" class="btn btn-sm btn-{{ include.btn-color | default: 'outline-secondary' }} mt-2">Ver cronología</a></p>
-</div></div>
+{%- assign date_items = site.data[site.metadata] | where_exp: 'item', 'item.objectid' -%}
+{%- unless site.data.theme.timeline-child-objects == true -%}
+  {%- assign date_items = date_items | where_exp: 'item', 'item.parentid == nil' -%}
+{%- endunless -%}
+{%- capture years_raw -%}
+{%- for item in date_items -%}
+  {%- assign date_value = item[date_field] | default: '' | strip | remove: 'ca.' | strip -%}
+  {%- assign date_parts = date_value | split: '-' -%}
+  {%- assign year_value = date_parts | first | strip -%}
+  {%- assign year_length = year_value | size -%}
+  {%- if year_length != 4 and date_parts.size > 1 -%}
+    {%- assign year_value = date_parts | last | strip -%}
+    {%- assign year_length = year_value | size -%}
+  {%- endif -%}
+  {%- if year_length == 4 -%}{{- year_value -}};{%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign years = years_raw | split: ';' | uniq | sort -%}
+<div class="card mb-3">
+  <div class="card-body">
+    <{{ include.heading_level | default: 'h2' | strip }} class="card-title h5">Per&iacute;odo temporal</{{ include.heading_level | default: 'h2' | strip }}>
+    <p class="card-text h5">
+      {% if years.size > 0 %}{{ years | first }} a {{ years | last }}{% else %}Sin fechas identificadas{% endif %}
+      <br><a href="{{ '/timeline.html' | relative_url }}" class="btn btn-sm btn-{{ include.btn-color | default: 'outline-secondary' }} mt-2">Ver cronolog&iacute;a</a>
+    </p>
+  </div>
+</div>
