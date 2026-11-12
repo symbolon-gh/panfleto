@@ -4,12 +4,11 @@ creator,Autoría,,,DCTERMS.creator,creator
 date,Fecha,,,DCTERMS.date,dateCreated
 description,Descripción,,,DCTERMS.description,description
 subject,Tema,true,,DCTERMS.subject,keywords
-periodo,Período,,,,
+periodo,"Período (1: 1973–1988; 2: 1989–2005; 3: 2006–2023)",,,,
 actor_emplazado,Actor emplazado,,,,
 Sujeto histórico,Sujeto histórico,,,,
 item_information,Tipo de pieza,,,,
 identifier,Identificador de origen,,,,
-objectid,Código de registro,,,,
 uso_imagen_texto,Uso de imagen y texto,,,,
 impresion,Impresión,,,,
 Elementos visuales,Elementos visuales,,,,
