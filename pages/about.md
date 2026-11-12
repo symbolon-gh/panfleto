@@ -2,7 +2,7 @@
 title: Acerca de
 layout: about
 permalink: /about.html
-credits: true
+credits: false
 about-featured-image: 001_a
 position: bottom
 heading: Acerca de la colección
