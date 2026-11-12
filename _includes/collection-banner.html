@@ -62,9 +62,7 @@
             {% if page.banner-sub-heading != false and page.banner-sub-heading or site.tagline %}<p class="mb-0">{{ page.banner-sub-heading | default: site.tagline }}</p>{% endif %}
         </div>
     </div>
-    {% if jumboLink != '' %}
-    <a class="text-white fs-6 position-absolute bottom-0 end-0 px-2 bg-dark bg-opacity-75" href="{{ jumboLink }}" title="Visit background image record">Featured Image</a>{% endif %}
-</div>
+   </div>
 {%- else -%}
 <div class="container">
     <div class="row align-items-center">
