@@ -32,6 +32,7 @@ custom-foot: js/browse-js.html
           </div>
         </div>{% endif %}
         <input type="text" class="form-control" id="filterTextBox" placeholder="Buscar..." aria-label="Buscar">
+        <select id="facetValueSelect" class="form-select" style="display:none;" aria-label="Seleccionar una opción de la categoría"><option value="">Selecciona una opción...</option></select>
         <div id="dateRangeInputs" class="date-range-inputs">
           <div class="date-input-group">
             <input type="text" id="startDate" class="ms-2 form-control" aria-label="Desde" placeholder="Desde">
@@ -61,3 +62,143 @@ custom-foot: js/browse-js.html
 </div>
 <div id="loadingIcon" class="text-center"><div class="spinner-border text-dark" role="status"><span class="visually-hidden">Cargando...</span></div></div>
 <div class="row" id="browseItems"></div>
+
+<!-- Opciones documentales: se extraen de las fichas principales, sin modificar el buscador original. -->
+<script>
+window.addEventListener('load', function () {
+  // Esta inicializacion se ejecuta despues de los controladores de Browse.
+  setTimeout(function () {
+    const fieldSelect = document.getElementById('fieldSelect');
+    const textInput = document.getElementById('filterTextBox');
+    const choices = document.getElementById('facetValueSelect');
+    const form = document.getElementById('browseFilter');
+    if (!fieldSelect || !textInput || !choices || !form || !Array.isArray(window.items)) return;
+
+    // No convertir fechas, titulos, autores o identificadores en listas.
+    const categorical = new Set([
+      'subject', 'periodo', 'impresion', 'Papel', 'Corte',
+      'Tipo de tipografía', 'Tamaño de tipografía',
+      'Color del soporte', 'Color de la tinta',
+      'uso_imagen_texto', 'Sujeto histórico',
+      'Estado de conservación', 'actor_emplazado', 'display_template'
+    ]);
+    const labels = {
+      'image':'Imagen', 'multiple':'Anverso y reverso',
+      'record':'Ficha', 'compound_object':'Objeto compuesto',
+      '1':'1 — 1973–1988', '2':'2 — 1989–2005', '3':'3 — 2006–2023'
+    };
+    const collator = new Intl.Collator('es', {numeric:true, sensitivity:'base'});
+
+    function readCurrentSelection() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('f0') && params.has('v0') && !params.has('f1')) {
+        return {field:params.get('f0'), value:params.get('v0')};
+      }
+      const hash = decodeURIComponent(window.location.hash.slice(1));
+      const separator = hash.indexOf(':');
+      if (separator > 0) return {field:hash.slice(0,separator), value:hash.slice(separator+1)};
+      return null;
+    }
+
+    function updateOptions(keepValue) {
+      const field = fieldSelect.value;
+      const previous = keepValue ? (choices.value || textInput.value) : '';
+      const shouldDisplay = categorical.has(field);
+      choices.replaceChildren(new Option('Selecciona una opción...', ''));
+      if (!shouldDisplay) {
+        choices.style.display = 'none';
+        // El buscador nativo gestiona la visibilidad de los campos de fecha.
+        if (field !== 'date') textInput.style.display = 'block';
+        return;
+      }
+      const counts = new Map();
+      window.items.forEach(item => {
+        if (item[field] == null) return;
+        const distinct = new Set(String(item[field]).split(';').map(s => s.trim()).filter(Boolean));
+        distinct.forEach(value => {
+          if (value.toUpperCase() !== 'N/A') counts.set(value, (counts.get(value) || 0) + 1);
+        });
+      });
+      Array.from(counts.keys()).sort(collator.compare).forEach(value => {
+        const name = labels[value] || value;
+        choices.add(new Option(name + ' (' + counts.get(value) + ')', value));
+      });
+      choices.style.display = 'block';
+      textInput.style.display = 'none';
+      if (previous && counts.has(previous)) choices.value = previous;
+      textInput.value = choices.value;
+    }
+
+    // Al seleccionar una categoria mostramos sus opciones existentes.
+    fieldSelect.addEventListener('change', function () {
+      textInput.value = '';
+      updateOptions(false);
+    });
+    choices.addEventListener('change', function () {
+      textInput.value = choices.value;
+    });
+
+    // Consultas mediante parametros: conservan correctamente los dos puntos
+    // de etiquetas como "Derecho social: Trabajo".
+    form.addEventListener('submit', function (event) {
+      if (!categorical.has(fieldSelect.value)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (!choices.value) {
+        choices.focus();
+        return;
+      }
+      const params = new URLSearchParams();
+      params.set('f0', fieldSelect.value);
+      params.set('b0', 'AND');
+      params.set('v0', choices.value);
+      const sort = document.querySelector('.browse-sort-item.active');
+      if (sort && sort.dataset.filter !== 'random') params.set('sort', sort.dataset.filter);
+      window.location.assign(window.location.pathname + '?' + params.toString());
+    }, true);
+
+    // Recupera una opcion ya activa al entrar desde un enlace o recargar.
+    // Los enlaces de tema pueden incluir dos puntos en el nombre;
+    // se convierten a una consulta de parametros sin perder el texto.
+    function redirectColonHash() {
+      const hash = decodeURIComponent(window.location.hash.slice(1));
+      const pos = hash.indexOf(':');
+      if (pos <= 0) return false;
+      const field = hash.slice(0, pos);
+      const value = hash.slice(pos + 1);
+      if (!categorical.has(field) || !value.includes(':')) return false;
+      const params = new URLSearchParams();
+      params.set('f0', field);
+      params.set('b0', 'AND');
+      params.set('v0', value);
+      window.location.replace(window.location.pathname + '?' + params.toString());
+      return true;
+    }
+    if (redirectColonHash()) return;
+    const current = readCurrentSelection();
+    if (current && categorical.has(current.field)) {
+      fieldSelect.value = current.field;
+      textInput.value = current.value;
+    }
+    updateOptions(true);
+
+    window.addEventListener('hashchange', function () {
+      setTimeout(function () {
+        if (redirectColonHash()) return;
+        const currentHash = readCurrentSelection();
+        if (currentHash && categorical.has(currentHash.field)) {
+          fieldSelect.value = currentHash.field;
+          textInput.value = currentHash.value;
+        }
+        updateOptions(true);
+      }, 0);
+    });
+    // Si el usuario restablece sin recargar la pagina, vuelve el campo libre.
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('button.filter[data-filter=""]')) {
+        setTimeout(function () { updateOptions(false); }, 0);
+      }
+    });
+  }, 0);
+});
+</script>
