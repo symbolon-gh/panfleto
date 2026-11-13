@@ -8,6 +8,9 @@ impresion,,,true,,Impresión
 Color de la tinta,,,true,,Color de la tinta
 Color del soporte,,,true,,Color del soporte
 Papel,,,true,,Papel
+Corte,,,true,,Corte
+Tipo de tipografía,,,true,,Tipo de tipografía
+Tamaño de tipografía,,,true,,Tamaño de tipografía
 Sujeto histórico,,,true,,Sujeto histórico
 Estado de conservación,,,true,,Estado de conservación
 uso_imagen_texto,,,true,,Uso de imagen y texto
