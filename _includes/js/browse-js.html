@@ -519,7 +519,9 @@ function handleHashChange() {
     let query = hash;
 
     if (hash.includes(":")) {
-        const [potentialField, hashQuery] = hash.split(":");
+   const separator = hash.indexOf(":");
+   const potentialField = hash.slice(0, separator);
+   const hashQuery = hash.slice(separator + 1);
         if (validFields.includes(potentialField)) {
             field = potentialField;
             query = hashQuery;
@@ -1110,8 +1112,10 @@ function setupEventHandlers() {
                 let field = 'all';
                 let query = hash;
                 
-                if (hash.includes(":")) {
-                    const [potentialField, hashQuery] = hash.split(":");
+                if (hash.includes(":")) {                 
+   const separator = hash.indexOf(":");
+   const potentialField = hash.slice(0, separator);
+   const hashQuery = hash.slice(separator + 1);
                     if (validFields.includes(potentialField)) {
                         field = potentialField;
                         query = hashQuery;
