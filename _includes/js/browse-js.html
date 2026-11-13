@@ -815,49 +815,52 @@ function shuffle(array) {
 /**
  * Sort items by specified field
  */
-// Orden cronologico documental para Panfleto, Calle y Memoria.
-// Formatos admitidos: YYYY-MM-DD, YYYY-MM, YYYY, MM-YYYY, ca.YYYY, ca.YYYY-MM y S/F.
+// Orden cronologico: primero anio, despues mes y dia cuando se conocen.
+// En el mismo mes, las fechas con dia van antes de las de solo mes.
+// Fechas con solo anio: al final de las fechas exactas de ese anio.
+// Fechas ca.: despues de las exactas del mismo anio. S/F: al final.
 function claveFechaPanfleto(valor) {
-    const fecha = String(valor ?? '').trim().replace(/\s+/g, ' ');
+    const texto = String(valor ?? '').trim().replace(/\s+/g, ' ');
+    const sinFecha = [1, 9999, 1, 13, 32];
+    if (!texto || /^S\s*\/\s*F\.?$/i.test(texto)) return sinFecha;
 
-    // Los registros sin fecha van al final.
-    if (!fecha || /^S\s*\/\s*F\.?$/i.test(fecha)) {
-        return [1, 9999, 9, 13, 32];
-    }
+    const aproximada = /^ca\.?\s*/i.test(texto);
+    const fecha = texto.replace(/^ca\.?\s*/i, '').trim();
+    let anio, mes = 13, dia = 32, partes;
 
-    const aproximada = /^ca\.?\s*/i.test(fecha);
-    const limpia = fecha.replace(/^ca\.?\s*/i, '');
-    let anio, mes = 0, dia = 0, precision = 2;
-    let partes;
-
-    if ((partes = limpia.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))) {
+    if ((partes = fecha.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))) {
+        // AAAA-MM-DD
         anio = Number(partes[1]);
         mes = Number(partes[2]);
         dia = Number(partes[3]);
-        precision = 0; // fecha completa
-    } else if ((partes = limpia.match(/^(\d{4})-(\d{1,2})$/))) {
+    } else if ((partes = fecha.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/))) {
+        // MM-DD-AAAA (cuando este formato se haya usado en la fuente)
+        mes = Number(partes[1]);
+        dia = Number(partes[2]);
+        anio = Number(partes[3]);
+    } else if ((partes = fecha.match(/^(\d{4})-(\d{1,2})$/))) {
+        // AAAA-MM
         anio = Number(partes[1]);
         mes = Number(partes[2]);
-        precision = 1; // anio y mes
-    } else if ((partes = limpia.match(/^(\d{1,2})-(\d{4})$/))) {
+    } else if ((partes = fecha.match(/^(\d{1,2})-(\d{4})$/))) {
+        // MM-AAAA (ejemplo existente: 06-1987)
         mes = Number(partes[1]);
         anio = Number(partes[2]);
-        precision = 1; // admite 06-1987 sin cambiar el CSV
-    } else if ((partes = limpia.match(/^(\d{4})$/))) {
+    } else if ((partes = fecha.match(/^(\d{4})$/))) {
+        // AAAA, sin mes ni dia conocidos
         anio = Number(partes[1]);
-        precision = 2; // solo anio
     } else {
-        return [1, 9999, 9, 13, 32];
+        return sinFecha;
     }
 
-    // No interpretar como validas las fechas con mes o dia inexistente.
-    if (mes > 12 || (precision < 2 && mes < 1) ||
-        (precision === 0 && (dia < 1 || dia > new Date(anio, mes, 0).getDate()))) {
-        return [1, 9999, 9, 13, 32];
+    if (anio < 1 || mes < 1 || mes > 13 ||
+        (mes !== 13 && mes > 12) ||
+        (dia !== 32 && (mes === 13 || dia < 1 ||
+          dia > new Date(anio, mes, 0).getDate()))) {
+        return sinFecha;
     }
-
-    // Dentro del mismo anio: fecha completa, anio-mes, anio, ca.
-    return [0, anio, aproximada ? 3 : precision, mes, dia];
+    // El mes 13 y el dia 32 son marcadores de orden, NO fechas inventadas.
+    return [0, anio, aproximada ? 1 : 0, mes, dia];
 }
 
 function sorting(jsonObject, keyToSortBy) {
@@ -868,11 +871,23 @@ function sorting(jsonObject, keyToSortBy) {
             for (let i = 0; i < fechaA.length; i++) {
                 if (fechaA[i] !== fechaB[i]) return fechaA[i] - fechaB[i];
             }
-            return 0;
+            // Desempate estable y reproducible si las fechas son equivalentes.
+            return String(a.id ?? a.objectid ?? '').localeCompare(
+                String(b.id ?? b.objectid ?? ''), 'es', { numeric: true }
+            );
         });
         return;
     }
 
+    // Mantiene el ordenamiento original para los demas campos.
+    jsonObject.sort((a, b) => {
+        let x = a[keyToSortBy];
+        let y = b[keyToSortBy];
+        if (typeof x === 'string') x = x.toUpperCase();
+        if (typeof y === 'string') y = y.toUpperCase();
+        return (x == null) ? 1 : (y == null) ? -1 : (x < y) ? -1 : (x > y) ? 1 : 0;
+    });
+}
     // Conserva sin cambios el ordenamiento de los demas campos.
     jsonObject.sort((a, b) => {
         let x = a[keyToSortBy];
