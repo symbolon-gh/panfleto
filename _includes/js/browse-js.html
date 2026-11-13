@@ -878,7 +878,12 @@ function sorting(jsonObject, keyToSortBy) {
         });
         return;
     }
-
+   
+    if (keyToSortBy === 'identifier') {
+        jsonObject.sort((a, b) => Number(a.identifier) - Number(b.identifier));
+        return;
+    }
+    
     // Mantiene el ordenamiento original para los demas campos.
     jsonObject.sort((a, b) => {
         let x = a[keyToSortBy];
