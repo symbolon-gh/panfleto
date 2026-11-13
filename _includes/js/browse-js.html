@@ -888,16 +888,6 @@ function sorting(jsonObject, keyToSortBy) {
         return (x == null) ? 1 : (y == null) ? -1 : (x < y) ? -1 : (x > y) ? 1 : 0;
     });
 }
-    // Conserva sin cambios el ordenamiento de los demas campos.
-    jsonObject.sort((a, b) => {
-        let x = a[keyToSortBy];
-        let y = b[keyToSortBy];
-        if (typeof x === 'string') x = x.toUpperCase();
-        if (typeof y === 'string') y = y.toUpperCase();
-        return (x == null) ? 1 : (y == null) ? -1 : (x < y) ? -1 : (x > y) ? 1 : 0;
-    });
-}
-
 // =============================================================================
 // INITIALIZATION & EVENT HANDLERS
 // =============================================================================
