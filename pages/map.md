@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
   const mapa = L.map('lienzo-mapa-panfletos', {scrollWheelZoom:false}).setView([-33.46,-70.66], 10);
+   mapa.attributionControl.setPrefix(false);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom:18,
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
