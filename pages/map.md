@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     );
     const coordenadas = new Map();
     visibles.forEach(x => {
-      const clave = JSON.stringify([x.lat, x.lon]);
+   const clave = x.lugar;
       if (!coordenadas.has(clave)) coordenadas.set(clave, []);
       coordenadas.get(clave).push(x);
     });
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (bounds.length === 1) mapa.setView(bounds[0], 14);
     else if (bounds.length > 1) mapa.fitBounds(bounds, {padding:[28,28], maxZoom:14});
     const piezas = new Set(visibles.map(x => x.pieza)).size;
-    estado.textContent = piezas + (piezas === 1 ? ' pieza en ' : ' piezas en ') + visibles.length + (visibles.length === 1 ? ' asociación geográfica (' : ' asociaciones geográficas (') + coordenadas.size + (coordenadas.size === 1 ? ' punto con coordenadas diferentes).' : ' puntos con coordenadas diferentes).');
+    estado.textContent = piezas + (piezas === 1 ? ' pieza en ' : ' piezas en ') + visibles.length + (visibles.length === 1 ? ' asociación geográfica (' : ' asociaciones geográficas (') + coordenadas.size + (coordenadas.size === 1 ? ' lugar representado).' : ' lugares representados).');
     if (!visibles.length) estado.textContent = 'No hay piezas con coordenadas para estos filtros.';
   }
   selPeriodo.addEventListener('change', render);
