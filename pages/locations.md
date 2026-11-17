@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!agrupados.has(p.lugar)) agrupados.set(p.lugar, []);
       agrupados.get(p.lugar).push(p);
     });
-    const nombres = Array.from(agrupados.keys()).sort(col.compare);
+   const nombres = Array.from(agrupados.keys()).sort((a,b) => agrupados.get(b).length - agrupados.get(a).length || col.compare(a,b));
     let totalPiezas = new Set();
     nombres.forEach(nombre => {
       const piezas = agrupados.get(nombre).sort((a,b) => col.compare(a.pieza,b.pieza));
