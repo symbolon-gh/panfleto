@@ -41,17 +41,20 @@ module Liquid
     def field_count_uniq(input, fields)
       field_list = fields.to_s.split(';').map(&:strip).reject(&:empty?)
       counts = {}
+      labels = {}
       input.each do |record|
         field_list.each do |field|
           value = record[field]
           next if value.nil? || value.to_s.strip.empty?
-          value.to_s.downcase.split(';').map(&:strip).reject(&:empty?).each do |term|
-            key = [term, field]
+          value.to_s.split(';').map(&:strip).reject(&:empty?).each do |term|
+            # Count case-insensitively, but retain the original display label.
+            key = [term.downcase, field]
             counts[key] = (counts[key] || 0) + 1
+            labels[key] ||= term
           end
         end
       end
-      counts.map { |k, v| [k[0], v, k[1]] }.sort_by { |item| item[0] }
+      counts.map { |k, v| [labels[k], v, k[1]] }.sort_by { |item| item[0].downcase }
     end
 
     def remove_stopwords(input, stopwords, index = 0)
