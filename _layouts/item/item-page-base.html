@@ -2,6 +2,11 @@
 layout: default
 item-meta: true
 ---
+{% assign titulo_ficha = page.title | default: '' | strip %}
+{% assign titulo_clave = titulo_ficha | downcase %}
+{% if titulo_ficha == '' or titulo_clave == 'n/a' or titulo_clave == 's/f' or titulo_clave == 's/i' or titulo_clave == '[anonimo]' or titulo_clave == 'sin fecha' %}
+{% assign titulo_ficha = page.objectid | prepend: 'Panfleto ' %}
+{% endif %}
 <div class="container py-3">
   {% include item/breadcrumbs.html %}
   <div class="my-0 h5 small">
@@ -9,7 +14,7 @@ item-meta: true
     {% elsif page.display_template == 'image' %}PANFLETO
     {% else %}PIEZA DE LA COLECCIÓN{% endif %}
   </div>
-  <h2 class="mb-3">{{ page.title }}
+  <h2 class="mb-3">{{ titulo_ficha }}
     {% unless page.display_template == 'record' %}
     <a href="#metadata" class="ms-3 btn btn-sm btn-outline-dark small">Ver descripción y metadatos
       <svg class="bi icon-sprite" role="img" aria-label="Ir a los metadatos"><use href="{{ '/assets/css/cb-icons.svg' | relative_url }}#arrow-down"/></svg>

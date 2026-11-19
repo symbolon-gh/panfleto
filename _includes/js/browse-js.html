@@ -34,6 +34,22 @@ var items = [
         "id":{{ item.objectid | jsonify }} }{% unless forloop.last %},{% endunless %}{%- endfor -%}
 ];
 
+/* Suprimir solo marcadores completos de ausencia; conservar los metadatos originales. */
+function esDatoSinInformacion(valor) {
+    if (valor === null || valor === undefined) return true;
+    const t = String(valor).trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return ['', 'n/a', 's/f', 's/i', '[anonimo]', 'anonimo', 'sin fecha', 's/d', 'n/d'].includes(t);
+}
+items.forEach(function(item) {
+    for (const campo of Object.keys(item)) {
+        if (['id', 'parent', 'img', 'format', 'display_template'].includes(campo)) continue;
+        if (esDatoSinInformacion(item[campo])) {
+            if (campo === 'title') item.title = 'Panfleto ' + item.id;
+            else delete item[campo];
+        }
+    }
+});
+
 // Valid field names for URL-based searches
 const validFields = [{% for f in fields %}"{{ f.field }}",{% endfor %}"title","display_template"];
 

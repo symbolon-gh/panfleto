@@ -70,6 +70,13 @@
     /* add item data */
     // title,objectid,image_thumb/small
     var carouselItems = [ {% for c in carousel-items %}[ {{ c.title | escape | jsonify }}, "{{ c.objectid }}", {% if c.image_small %}{{ c.image_small | relative_url | jsonify }}{% else %}{{ c.image_thumb | relative_url | jsonify }}{% endif %}, "{{ c.parentid }}", {{ c.image_alt_text | default: c.title | escape | jsonify }} ]{% unless forloop.last %}, {% endunless %}{% endfor %}];
+    /* Títulos de fichas sin datos: mostrar el identificador. */
+    carouselItems.forEach(function(p) {
+        const title = String(p[0] || '').trim().toLowerCase();
+        if (['', 'n/a', 's/f', 's/i', '[anonimo]', '[anónimo]', 'sin fecha'].includes(title)) p[0] = 'Panfleto ' + p[1];
+        const alt = String(p[4] || '').trim().toLowerCase();
+        if (['', 'n/a', 's/f', 's/i', '[anonimo]', '[anónimo]', 'sin fecha'].includes(alt)) p[4] = p[0];
+    });
     /* shuffle items */
     carouselItems.sort(function() { return 0.5 - Math.random() });
 

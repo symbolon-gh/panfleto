@@ -1,5 +1,10 @@
+{% assign titulo_ficha = page.title | default: '' | strip %}
+{% assign titulo_clave = titulo_ficha | downcase %}
+{% if titulo_ficha == '' or titulo_clave == 'n/a' or titulo_clave == 's/f' or titulo_clave == 's/i' or titulo_clave == '[anonimo]' or titulo_clave == 'sin fecha' %}
+{% assign titulo_ficha = page.objectid | prepend: 'Panfleto ' %}
+{% endif %}
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a class="text-dark" href="{{ '/' | relative_url }}">Inicio</a></li>
   <li class="breadcrumb-item"><a class="text-dark" href="{{ '/browse.html' | relative_url }}">Panfletos</a></li>
-  <li class="breadcrumb-item active text-dark" aria-current="page">{{ page.title | truncatewords: 10 }}</li>
+  <li class="breadcrumb-item active text-dark" aria-current="page">{{ titulo_ficha | truncatewords: 10 }}</li>
 </ol>

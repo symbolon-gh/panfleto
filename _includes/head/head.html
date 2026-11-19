@@ -1,6 +1,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{{ page.title | escape }} | {{ site.title | escape }}</title>
+{% assign titulo_navegador = page.title | default: '' | strip %}
+{% assign titulo_clave = titulo_navegador | downcase %}
+{% if page.objectid %}
+{% if titulo_navegador == '' or titulo_clave == 'n/a' or titulo_clave == 's/f' or titulo_clave == 's/i' %}
+{% assign titulo_navegador = page.objectid | prepend: 'Panfleto ' %}
+{% endif %}
+{% endif %}
+<title>{{ titulo_navegador | escape }} | {{ site.title | escape }}</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
 <!--
 
