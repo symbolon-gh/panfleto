@@ -50,7 +50,12 @@
         {% if include.shuffle == true %}shuffle(array);{% endif %}
         for (let i = 0; i < array.length; i++) {
             size = mapSize(array[i][1]);
-            items += '<a class="btn btn-{{ include.button | default: "outline-primary" }} m-2 tagcloud' + size + '" href="{{ "/browse.html" | relative_url }}#' + array[i][2] + ':' + encodeURIComponent(array[i][0]) + '" >' + array[i][0] + '</a>';
+            const tipo = array[i][2] === 'subject' ? 'tema' : (array[i][2] === 'location' ? 'lugar' : '');
+            const atributos = tipo ? ' translate="no" data-glosario-tipo="' + tipo + '" data-glosario-es="' + encodeURIComponent(array[i][0]) + '"' : '';
+            const direccion = array[i][2] === 'subject'
+                ? '{{ "/browse.html" | relative_url }}?f0=subject&b0=AND&v0=' + encodeURIComponent(array[i][0])
+                : '{{ "/browse.html" | relative_url }}#' + array[i][2] + ':' + encodeURIComponent(array[i][0]);
+            items += '<a class="btn btn-{{ include.button | default: "outline-primary" }} m-2 tagcloud' + size + (tipo ? ' notranslate' : '') + '"' + atributos + ' href="' + direccion.replace(/&/g, '&amp;') + '" >' + array[i][0] + '</a>';
         }
         cloud.innerHTML = items;
     }

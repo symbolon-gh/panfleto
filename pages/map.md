@@ -56,7 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const capa = L.layerGroup().addTo(mapa);
   const col = new Intl.Collator('es', {numeric:true, sensitivity:'base'});
   const lugares = Array.from(new Set(entradas.map(x => x.location).filter(Boolean))).sort(col.compare);
-  lugares.forEach(nombre => selLugar.add(new Option(nombre, nombre)));
+  lugares.forEach(nombre => {
+    const opcion = new Option(nombre, nombre);
+    opcion.dataset.glosarioTipo = 'lugar';
+    opcion.dataset.glosarioEs = encodeURIComponent(nombre);
+    opcion.classList.add('notranslate');
+    opcion.setAttribute('translate', 'no');
+    selLugar.add(opcion);
+  });
   if (['1','2','3'].includes(parametros.get('periodo'))) selPeriodo.value = parametros.get('periodo');
   if (lugares.includes(parametros.get('lugar'))) selLugar.value = parametros.get('lugar');
   const filtroPieza = /^\d{3}_a$/.test(parametros.get('pieza') || '') ? parametros.get('pieza') : '';
@@ -114,7 +121,14 @@ document.addEventListener('DOMContentLoaded', function () {
         li.appendChild(link);
         const subtitulo = document.createElement('div');
         subtitulo.className = 'small text-muted';
-        subtitulo.textContent = p.lugar + ' · ' + p.caras.join(' y ');
+        const sitio = document.createElement('span');
+        sitio.textContent = p.lugar;
+        sitio.dataset.glosarioTipo = 'lugar';
+        sitio.dataset.glosarioEs = encodeURIComponent(p.lugar);
+        sitio.classList.add('notranslate');
+        sitio.setAttribute('translate', 'no');
+        subtitulo.appendChild(sitio);
+        subtitulo.appendChild(document.createTextNode(' · ' + p.caras.join(' y ')));
         li.appendChild(subtitulo);
         ul.appendChild(li);
       });

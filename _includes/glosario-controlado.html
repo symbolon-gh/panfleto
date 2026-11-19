@@ -1,0 +1,154 @@
+{% comment %}
+  Glosario de interfaz ES/EN/FR: mantiene las claves de búsqueda y los
+  identificadores de lugar originales; solo cambia etiquetas visibles.
+  El resto de los textos sigue a cargo del traductor de páginas externo.
+{% endcomment %}
+<script>
+(function () {
+    'use strict';
+    const datos = {{ site.data.glosario_traducciones_borrador | jsonify }};
+    if (!datos || !Array.isArray(datos.temas) || !Array.isArray(datos.lugares)) return;
+
+    function idiomaActual() {
+        const parametros = new URLSearchParams(window.location.search);
+        const idioma = parametros.get('_x_tr_tl') || parametros.get('ui_lang') || parametros.get('tl') || 'es';
+        return idioma === 'en' || idioma === 'fr' ? idioma : 'es';
+    }
+    const idioma = idiomaActual();
+    const temas = new Map(datos.temas.map(function (t) { return [t.es, t]; }));
+    const lugares = new Map(datos.lugares.map(function (l) { return [l.es, l]; }));
+
+    function etiqueta(tipo, original) {
+        const diccionario = tipo === 'tema' || tipo === 'subject' ? temas : lugares;
+        const registro = diccionario.get(original);
+        return registro ? registro[idioma] || registro.es : original;
+    }
+    function proteger(elemento, tipo, original, sufijo) {
+        const diccionario = tipo === 'tema' || tipo === 'subject' ? temas : lugares;
+        if (!elemento || !diccionario.has(original)) return;
+        elemento.setAttribute('translate', 'no');
+        elemento.classList.add('notranslate');
+        const nuevo = etiqueta(tipo, original) + (sufijo || '');
+        if (elemento.textContent !== nuevo) elemento.textContent = nuevo;
+    }
+    function nombreEnUrl(enlace) {
+        const href = enlace.getAttribute('href') || '';
+        try {
+            const url = new URL(href, window.location.href);
+            if (url.searchParams.get('f0') === 'subject') return url.searchParams.get('v0');
+        } catch (_) {}
+        const indice = href.indexOf('#');
+        if (indice === -1) return null;
+        try {
+            const fragmento = decodeURIComponent(href.slice(indice + 1));
+            return fragmento.startsWith('subject:') ? fragmento.slice(8) : null;
+        } catch (_) {
+            return null;
+        }
+    }
+
+    function aplicarEtiquetas() {
+        // Datos anotados en las plantillas: la fuente espanola es inmutable.
+        document.querySelectorAll('[data-glosario-tipo][data-glosario-es]').forEach(function (nodo) {
+            let original;
+            try { original = decodeURIComponent(nodo.dataset.glosarioEs.replace(/\+/g, '%20')); }
+            catch (_) { original = nodo.dataset.glosarioEs; }
+            proteger(nodo, nodo.dataset.glosarioTipo, original);
+        });
+
+        // Nubes, enlaces de las fichas y botones tematicos del buscador.
+        document.querySelectorAll('a[href*="browse.html"]').forEach(function (enlace) {
+            const original = nombreEnUrl(enlace);
+            if (original && temas.has(original)) proteger(enlace, 'tema', original);
+        });
+
+        // Valores del selector: el value en espanol permanece intacto para filtrar.
+        document.querySelectorAll('#facetValueSelect option').forEach(function (opcion) {
+            const original = opcion.value;
+            if (!temas.has(original)) return;
+            if (!Object.prototype.hasOwnProperty.call(opcion.dataset, 'glosarioSufijo')) {
+                const coincidencia = opcion.textContent.match(/\s*\(\d+\)\s*$/);
+                opcion.dataset.glosarioSufijo = coincidencia ? coincidencia[0] : '';
+            }
+            proteger(opcion, 'tema', original, opcion.dataset.glosarioSufijo);
+        });
+        document.querySelectorAll('#filtro-mapa-lugar option').forEach(function (opcion) {
+            if (lugares.has(opcion.value)) proteger(opcion, 'lugar', opcion.value);
+        });
+
+        // Titulos dinamicos de la pagina Lugares.
+        document.querySelectorAll('#lugares-lista h2').forEach(function (titulo) {
+            const original = titulo.dataset.glosarioOriginal || titulo.textContent.trim();
+            if (!lugares.has(original)) return;
+            titulo.dataset.glosarioOriginal = original;
+            proteger(titulo, 'lugar', original);
+        });
+
+        // Lugares georreferenciados en las fichas individuales.
+        document.querySelectorAll('#ubicaciones-documentadas .list-group strong').forEach(function (titulo) {
+            const original = titulo.dataset.glosarioOriginal || titulo.textContent.trim();
+            if (!lugares.has(original)) return;
+            titulo.dataset.glosarioOriginal = original;
+            proteger(titulo, 'lugar', original);
+        });
+
+        // Los encabezados de los textos curatoriales llevan el nombre del tema.
+        const cabecera = document.getElementById('contexto-tematico-titulo');
+        if (cabecera) {
+            const parametros = new URLSearchParams(window.location.search);
+            let tema = parametros.get('f0') === 'subject' ? parametros.get('v0') : null;
+            if (!tema) {
+                try {
+                    const fragmento = decodeURIComponent(window.location.hash.slice(1));
+                    if (fragmento.startsWith('subject:')) tema = fragmento.slice(8);
+                } catch (_) {}
+            }
+            if (tema && temas.has(tema)) proteger(cabecera, 'tema', tema);
+        }
+
+        // En Datos, solo la columna Temas tiene traduccion controlada.
+        document.querySelectorAll('#item-table tbody tr td:nth-child(4)').forEach(function (celda) {
+            if (celda.dataset.glosarioProcesado === 'si') return;
+            const valores = celda.textContent.split(';').map(function (x) { return x.trim(); }).filter(Boolean);
+            if (!valores.length || !valores.some(function (x) { return temas.has(x); })) return;
+            celda.dataset.glosarioProcesado = 'si';
+            celda.replaceChildren();
+            valores.forEach(function (tema, indice) {
+                if (indice) celda.appendChild(document.createTextNode('; '));
+                if (temas.has(tema)) {
+                    const span = document.createElement('span');
+                    span.dataset.glosarioTipo = 'tema';
+                    span.dataset.glosarioEs = encodeURIComponent(tema);
+                    proteger(span, 'tema', tema);
+                    celda.appendChild(span);
+                } else {
+                    celda.appendChild(document.createTextNode(tema));
+                }
+            });
+        });
+    }
+
+    window.CBControlledTranslation = {
+        language: idioma,
+        topic: function (nombre) { return etiqueta('tema', nombre); },
+        place: function (nombre) { return etiqueta('lugar', nombre); },
+        apply: aplicarEtiquetas
+    };
+
+    let pendiente = false;
+    function programar() {
+        if (pendiente) return;
+        pendiente = true;
+        window.requestAnimationFrame(function () {
+            pendiente = false;
+            aplicarEtiquetas();
+        });
+    }
+    aplicarEtiquetas();
+    const observador = new MutationObserver(programar);
+    observador.observe(document.body, {childList:true, subtree:true, characterData:true});
+    window.addEventListener('hashchange', programar);
+    window.addEventListener('popstate', programar);
+    window.addEventListener('pageshow', programar);
+})();
+</script>

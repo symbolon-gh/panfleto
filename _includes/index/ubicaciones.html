@@ -10,7 +10,7 @@ Cada cara mantiene su propio lugar y coordenadas. No se muestran fichas sin dato
   <ul class="list-group mb-2">
   {%- for u in ubicaciones_ficha -%}
     <li class="list-group-item">
-      <div><strong>{{ u.location | escape }}</strong> <span class="small text-muted">({{ u.cara | escape }})</span></div>
+      <div><strong class="notranslate" translate="no" data-glosario-tipo="lugar" data-glosario-es="{{ u.location | url_encode }}">{{ u.location | escape }}</strong> <span class="small text-muted">({{ u.cara | escape }})</span></div>
       <div class="small">Latitud: <span class="font-monospace">{{ u.latitude | escape }}</span> · Longitud: <span class="font-monospace">{{ u.longitude | escape }}</span></div>
     </li>
   {%- endfor -%}

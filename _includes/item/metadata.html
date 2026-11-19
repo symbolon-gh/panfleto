@@ -12,7 +12,7 @@
             {% if f.browse_link == "true" %}
             {% assign topics = valor | split: ";" %}
             {% for t in topics %}
-            <a class="me-3" href="{{ t | strip | url_param_escape | prepend: ':' | prepend: f.field | prepend: '/browse.html#' | relative_url }}">{{ t | strip }}</a>
+            <a class="me-3 notranslate" translate="no" data-glosario-tipo="tema" data-glosario-es="{{ t | strip | url_encode }}" href="{% if f.field == 'subject' %}{{ '/browse.html' | relative_url }}?f0=subject&amp;b0=AND&amp;v0={{ t | strip | url_encode }}{% else %}{{ t | strip | url_param_escape | prepend: ':' | prepend: f.field | prepend: '/browse.html#' | relative_url }}{% endif %}">{{ t | strip }}</a>
             {% endfor %}
             {% elsif f.external_link == "true" %}
             <a href="{{ valor }}">{{ valor }}</a>

@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const agrupados = new Map();
     asociaciones.forEach(p => {
       if (per && p.periodo !== per) return;
-      if (q && !normalizar(p.lugar).includes(q)) return;
+      const nombreTraducido = window.CBControlledTranslation ? window.CBControlledTranslation.place(p.lugar) : p.lugar;
+      if (q && !normalizar(p.lugar + ' ' + nombreTraducido).includes(q)) return;
       if (!agrupados.has(p.lugar)) agrupados.set(p.lugar, []);
       agrupados.get(p.lugar).push(p);
     });
@@ -73,6 +74,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const heading = document.createElement('h2');
       heading.className = 'h5 mb-1';
       heading.textContent = nombre;
+      heading.dataset.glosarioTipo = 'lugar';
+      heading.dataset.glosarioEs = encodeURIComponent(nombre);
+      heading.classList.add('notranslate');
+      heading.setAttribute('translate', 'no');
       card.appendChild(heading);
       const cantidad = document.createElement('p');
       cantidad.className = 'text-muted small mb-2';
