@@ -1,6 +1,6 @@
 {
-  "nota": "Borrador editorial de traducciones controladas. No está conectado a la interfaz y no modifica los metadatos originales. Propuestas pendientes de validación.",
-  "version": "borrador_1",
+  "nota": "Vocabulario editorial ES/EN/FR conectado en fase piloto a las etiquetas temáticas y geográficas. Los textos extensos se traducen por el servicio externo. Las equivalencias siguen disponibles para revisión editorial.",
+  "version": "piloto_1",
   "idiomas": [
     "es",
     "en",
