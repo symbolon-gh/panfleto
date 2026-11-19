@@ -56,6 +56,14 @@ layout: default
 </div>
 {% endif %}
 
+<style>
+    /* Justificación del cuerpo editorial, en español, inglés y francés. */
+    #about-contents-wrapper p {
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+    }
+</style>
 <div id="about-wrapper">
     <div id="about-toc-wrapper">
         {% unless page.toc == false %}
