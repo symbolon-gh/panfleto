@@ -46,7 +46,38 @@
             </ul>
             
             {% include nav-search-lunr.html %}
-            
+
+            <!-- Traducción automática de la página actual; el español es la versión original. -->
+            <div class="d-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0 flex-shrink-0" aria-label="Opciones de idioma">
+                <span class="text-white-50 small">Idioma:</span>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Traducción automática">
+                    <a class="btn btn-outline-light active" id="idioma-es" lang="es" aria-current="page" href="{{ page.url | absolute_url }}" title="Ver la versión original en español">ES</a>
+                    <a class="btn btn-outline-light" id="idioma-en" lang="en" href="https://translate.google.com/?sl=es&amp;tl=en&amp;op=websites" title="Traducción automática al inglés mediante Google Translate">EN</a>
+                    <a class="btn btn-outline-light" id="idioma-fr" lang="fr" href="https://translate.google.com/?sl=es&amp;tl=fr&amp;op=websites" title="Traducción automática al francés mediante Google Translate">FR</a>
+                </div>
+            </div>
+            <script>
+            (function () {
+                // Cada botón traduce la página actual, incluyendo sus filtros en la URL.
+                const origen = new URL({{ page.url | absolute_url | jsonify }});
+                const actual = new URL(window.location.href);
+                const direccion = actual.origin === origen.origin ? actual.href : origen.href;
+                const espanol = document.getElementById('idioma-es');
+                if (espanol) espanol.href = direccion;
+
+                [['en', 'idioma-en'], ['fr', 'idioma-fr']].forEach(function (opcion) {
+                    const enlace = document.getElementById(opcion[1]);
+                    if (!enlace) return;
+                    const traductor = new URL('https://translate.google.com/translate');
+                    traductor.searchParams.set('sl', 'es');
+                    traductor.searchParams.set('tl', opcion[0]);
+                    traductor.searchParams.set('hl', opcion[0]);
+                    traductor.searchParams.set('u', direccion);
+                    enlace.href = traductor.href;
+                });
+            })();
+            </script>
+
         </div>
     </div>
 </nav>
