@@ -2,11 +2,12 @@
   <div class="row border-bottom border-white pb-4 mb-2">
     <div class="col-md-7 px-4 mt-3">
       <h2 class="h4"><a href="{{ '/' | relative_url }}" class="text-white">{{ site.title }}</a></h2>
-      <p class="text-white"><small>{{ site.description }}</small></p>
-      <nav aria-label="Navegación del pie de página"><ul id="footer-nav" class="nav nav-pills">
+      <p class="text-white"><small>{{ page.description | default: site.description }}</small></p>
+      <nav aria-label="{% if page.lang == 'en' %}Footer navigation{% elsif page.lang == 'fr' %}Navigation de pied de page{% else %}Navegación del pie de página{% endif %}"><ul id="footer-nav" class="nav nav-pills">
+        {%- assign etiquetas_nav = site.data.nav_traducciones[page.lang] -%}
         {%- assign navItems = site.data.config-nav | where_exp: 'item', 'item.dropdown_parent == nil' -%}
-        {% for nav in navItems %}<li class="nav-item">
-          {% if nav.stub %}<a class="nav-link text-light{% if page.url == nav.stub %} active{% endif %}" {% if page.url == nav.stub %}aria-current="page" {% endif %}href="{{ nav.stub | relative_url }}">{{ nav.display_name }}</a>
+        {% for nav in navItems %}{% assign etiqueta_nav = etiquetas_nav[nav.display_name] | default: nav.display_name %}<li class="nav-item">
+          {% if nav.stub %}<a class="nav-link text-light{% if page.url == nav.stub %} active{% endif %}" {% if page.url == nav.stub %}aria-current="page" {% endif %}{% if nav.stub == '/about.html' %}data-about-link="true"{% endif %} href="{{ nav.stub | relative_url }}">{{ etiqueta_nav }}</a>
           {% else %}{% assign childStub = site.data.config-nav | where_exp: 'item', 'item.dropdown_parent == nav.display_name' | first %}<a class="nav-link text-light" href="{{ childStub.stub | relative_url }}">{{ nav.display_name }}</a>{% endif %}
         </li>{% endfor %}
       </ul></nav>
@@ -15,5 +16,5 @@
       {% if site.organization-logo-nav %}<p class="text-md-end"><a href="{{ site.organization-link }}"><img id="footer-logo" class="img-fluid" src="{{ site.organization-logo-nav | relative_url }}" alt="{{ site.organization-name | escape }}"></a></p>{% endif %}
     </div>
   </div>
-  <div class="col-md-12 text-center pt-3 pb-1"><p class="text-white">Última actualización: {{ site.time | date: '%Y' }}</p></div>
+  <div class="col-md-12 text-center pt-3 pb-1"><p class="text-white">{% if page.lang == 'en' %}Last updated:{% elsif page.lang == 'fr' %}Dernière mise à jour :{% else %}Última actualización:{% endif %} {{ site.time | date: '%Y' }}</p></div>
 </footer>

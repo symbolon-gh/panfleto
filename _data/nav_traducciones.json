@@ -1,0 +1,22 @@
+{
+  "en": {
+    "Inicio": "Home",
+    "Explorar": "Explore",
+    "Temas": "Topics",
+    "Lugares": "Places",
+    "Mapa": "Map",
+    "Cronología": "Timeline",
+    "Datos": "Data",
+    "Acerca de": "About"
+  },
+  "fr": {
+    "Inicio": "Accueil",
+    "Explorar": "Explorer",
+    "Temas": "Thèmes",
+    "Lugares": "Lieux",
+    "Mapa": "Carte",
+    "Cronología": "Chronologie",
+    "Datos": "Données",
+    "Acerca de": "À propos"
+  }
+}

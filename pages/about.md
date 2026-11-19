@@ -1,8 +1,11 @@
 ---
 title: Acerca de
 layout: about
+lang: es
+translation_key: about
 permalink: /about.html
 credits: false
+toc: false
 about-featured-image: 001_a
 position: bottom
 heading: Acerca de la colección
@@ -12,8 +15,16 @@ padding: 6em
 
 ## Panfleto, Calle y Memoria
 
-Esta colección permite explorar panfletos vinculados con la visualidad política en Chile. Cada ficha reúne la imagen digital y los metadatos disponibles, incluidos aspectos temáticos, textuales y materiales. Cuando se dispone de anverso y reverso, ambas caras se presentan como parte de un mismo panfleto.
+**Panfleto, Calle y Memoria: Visualidad política en Chile, 1973–2023** es un proyecto de investigación y archivo digital dedicado a recuperar, documentar y poner en valor las expresiones gráficas que han circulado por las calles de Chile durante los últimos cincuenta años.
 
-Los datos reproducen la información registrada en el catálogo de la colección. Los campos sin información se omiten en las fichas.
+Panfletos, volantes y otros impresos callejeros han sido utilizados para denunciar, convocar, organizar y expresar distintas posiciones frente a los acontecimientos políticos y sociales del país. Muchos de estos materiales fueron producidos para circular rápidamente, ser leídos en el espacio público y desaparecer poco después. Sin embargo, su carácter efímero no disminuye su valor histórico y artístico: sus imágenes, consignas, tipografías, colores y soportes constituyen testimonios de las formas en que distintos actores sociales han buscado hacerse visibles e intervenir en la vida pública.
 
-El sitio se construyó con [CollectionBuilder-CSV](https://collectionbuilder.github.io/).
+La colección permite aproximarse a las transformaciones de la visualidad política chilena a través de tres grandes períodos: la dictadura militar (1973–1988), la transición democrática (1989–2005) y el ciclo de movilizaciones y transformaciones sociales más recientes (2006–2023). A través de sus piezas es posible reconocer continuidades, cambios y disputas en los lenguajes visuales que han acompañado estos procesos.
+
+Actualmente, el archivo reúne **370 panfletos digitalizados, de los cuales 178 cuentan con registros de anverso y reverso**. Las piezas se organizan en **19 categorías temáticas**, entre las que destacan Derechos Humanos, Constitución, Plebiscito, Movimiento Nacionalista, Género Feminismo y Disidencias, Pueblos Originarios y distintas reivindicaciones vinculadas a los derechos sociales.
+
+El sitio permite explorar la colección a partir de sus contenidos, características materiales, temáticas y referencias temporales y territoriales. Asimismo, cuando se dispone de información geográfica, las fichas incorporan las coordenadas de los lugares mencionados o representados en los panfletos, que también pueden visualizarse en la sección **[Mapa]({{ '/map.html' | relative_url }})**.
+
+Más que reunir imágenes del pasado, este archivo digital busca abrir nuevas posibilidades para observar, comprender y reconstruir la memoria colectiva desde las expresiones gráficas que han habitado nuestras calles.
+
+**Porque una parte importante de la historia política y visual de Chile también se ha escrito en pequeños papeles que alguna vez circularon de mano en mano.**

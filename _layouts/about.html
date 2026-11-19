@@ -74,7 +74,7 @@ layout: default
         </div>
         {% endunless %}
     </div>
-    <div id="about-contents-wrapper">
+    <div id="about-contents-wrapper"{% if page.lang == 'en' or page.lang == 'fr' %} class="notranslate" translate="no" lang="{{ page.lang }}"{% endif %}>
         {{ content }}
     </div>
     {% if page.credits == true %}

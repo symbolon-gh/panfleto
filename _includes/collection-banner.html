@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="row align-items-center">
         <div id="title" class="{% if site.organization-logo-banner %}col-md-9{% else %}col-12{% endif %}">
             <h1 class="mt-2"><a class="text-dark" href="{{ '/' | relative_url }}" >{{ site.title }}</a></h1>	 
-            {% if site.tagline %}<p>{{ site.tagline }}</p>{% endif %}
+            {% if page.tagline or site.tagline %}<p>{{ page.tagline | default: site.tagline }}</p>{% endif %}
         </div>
         {% if site.organization-logo-banner %}
         <div class="col-md-3 d-none d-lg-block text-end">

@@ -23,12 +23,14 @@
         
         <div class="collapse navbar-collapse" id="page-nav">
             <ul class="navbar-nav me-auto">
+                {%- assign etiquetas_nav = site.data.nav_traducciones[page.lang] -%}
                 {%- assign navItems = site.data.config-nav | where_exp: 'item', 'item.display_name' -%}
 {%- assign navItems = navItems | where_exp: 'item', 'item.dropdown_parent == nil' -%} 
                 {% for nav in navItems %}
+                {% assign etiqueta_nav = etiquetas_nav[nav.display_name] | default: nav.display_name %}
                 {% if nav.stub %}
                 <li class="nav-item">
-                    <a class="nav-link{% if page.url == nav.stub %} active{% endif %}" {% if page.url == nav.stub %}aria-current="page" {% endif %}href="{{ nav.stub | relative_url }}">{{ nav.display_name }}</a>
+                    <a class="nav-link{% if page.url == nav.stub %} active{% endif %}" {% if page.url == nav.stub %}aria-current="page" {% endif %}{% if nav.stub == '/about.html' %}data-about-link="true"{% endif %} href="{{ nav.stub | relative_url }}">{{ etiqueta_nav }}</a>
                 </li>
                 {%- else -%}
                 <li class="nav-item dropdown">
@@ -49,7 +51,7 @@
 
             <!-- Traducción automática de la página actual; el español es la versión original. -->
             <div class="d-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0 flex-shrink-0" aria-label="Opciones de idioma">
-                <span class="text-white-50 small">Idioma:</span>
+                <span class="text-white-50 small">{% if page.lang == 'en' %}Language:{% elsif page.lang == 'fr' %}Langue :{% else %}Idioma:{% endif %}</span>
                 <div class="btn-group btn-group-sm" role="group" aria-label="Traducción automática">
                     <a class="btn btn-outline-light active notranslate" translate="no" id="idioma-es" lang="es" aria-current="page" href="{{ page.url | absolute_url }}" title="Ver la versión original en español">ES</a>
                     <a class="btn btn-outline-light notranslate" translate="no" id="idioma-en" lang="en" href="https://translate.google.com/?sl=es&amp;tl=en&amp;op=websites" title="Traducción automática al inglés mediante Google Translate">EN</a>
@@ -74,7 +76,58 @@
                     direccion.hash = actual.hash;
                 }
 
-                const idioma = actual.searchParams.get('_x_tr_tl') || actual.searchParams.get('ui_lang') || 'es';
+                const idioma = {{ page.lang | default: '' | jsonify }} || actual.searchParams.get('_x_tr_tl') || actual.searchParams.get('ui_lang') || 'es';
+                const paginasAcerca = {
+                    es: {{ '/about.html' | absolute_url | jsonify }},
+                    en: {{ '/about-en.html' | absolute_url | jsonify }},
+                    fr: {{ '/about-fr.html' | absolute_url | jsonify }}
+                };
+                const idiomasDisponibles = ['es', 'en', 'fr'];
+                const idiomaEnUso = idiomasDisponibles.includes(idioma) ? idioma : 'es';
+                function ajustarEnlacesAcerca() {
+                    document.querySelectorAll('[data-about-link]').forEach(function (enlace) {
+                        enlace.href = paginasAcerca[idiomaEnUso];
+                    });
+                }
+                ajustarEnlacesAcerca();
+                document.addEventListener('DOMContentLoaded', ajustarEnlacesAcerca);
+                // Desde las versiones editoriales de Acerca de, el resto del sitio
+                // sigue utilizando traduccion automatica, sin perder el idioma.
+                if ({{ page.lang | default: '' | jsonify }} === 'en' || {{ page.lang | default: '' | jsonify }} === 'fr') {
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const enlaces = document.querySelectorAll(
+                            '#page-nav a[href], #footer-nav a[href], #about-contents-wrapper a[href]'
+                        );
+                        enlaces.forEach(function (enlace) {
+                            if (enlace.hasAttribute('data-about-link')) return;
+                            const referencia = enlace.getAttribute('href');
+                            if (!referencia || referencia.startsWith('#')) return;
+                            const destino = new URL(enlace.href, origen.href);
+                            if (destino.origin !== origen.origin ||
+                                !destino.pathname.startsWith({{ site.baseurl | append: '/' | jsonify }})) return;
+                            destino.searchParams.set('ui_lang', idiomaEnUso);
+                            const externo = new URL('https://translate.google.com/translate');
+                            externo.searchParams.set('sl', 'es');
+                            externo.searchParams.set('tl', idiomaEnUso);
+                            externo.searchParams.set('hl', idiomaEnUso);
+                            externo.searchParams.set('u', destino.href);
+                            enlace.href = externo.href;
+                        });
+                    });
+                }
+                // En Acerca de, ofrecer las versiones editoriales en lugar del traductor.
+                if (/\/about(?:-en|-fr)?\.html$/.test(origen.pathname)) {
+                    [['es','idioma-es'],['en','idioma-en'],['fr','idioma-fr']].forEach(function (par) {
+                        const enlace = document.getElementById(par[1]);
+                        if (!enlace) return;
+                        enlace.href = paginasAcerca[par[0]];
+                        const activo = par[0] === idiomaEnUso;
+                        enlace.classList.toggle('active', activo);
+                        if (activo) enlace.setAttribute('aria-current', 'page');
+                        else enlace.removeAttribute('aria-current');
+                    });
+                    return;
+                }
                 [['es', 'idioma-es'], ['en', 'idioma-en'], ['fr', 'idioma-fr']].forEach(function (entrada) {
                     const enlace = document.getElementById(entrada[1]);
                     if (!enlace) return;
