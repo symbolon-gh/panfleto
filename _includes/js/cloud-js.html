@@ -19,6 +19,11 @@
     /* subject terms + count */
     var terms = {{ uniqTerms | jsonify }};
 
+    /* Orden decreciente por cantidad de fichas, con desempate alfabético. */
+    terms.sort(function(a, b) {
+        return b[1] - a[1] || a[0].localeCompare(b[0], 'es', {sensitivity: 'base'});
+    });
+
     /* calculate max size */
     var counts = terms.map(function(obj){ return obj[1]; });
     var countMax = counts.reduce(function(a, b) { return Math.max(a, b); });
