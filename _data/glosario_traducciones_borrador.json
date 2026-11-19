@@ -1,0 +1,313 @@
+{
+  "nota": "Borrador editorial de traducciones controladas. No está conectado a la interfaz y no modifica los metadatos originales. Propuestas pendientes de validación.",
+  "version": "borrador_1",
+  "idiomas": [
+    "es",
+    "en",
+    "fr"
+  ],
+  "temas": [
+    {
+      "es": "Actor Político o Social",
+      "en": "Political or Social Actor",
+      "fr": "Acteur politique ou social"
+    },
+    {
+      "es": "Pinochet",
+      "en": "Pinochet",
+      "fr": "Pinochet"
+    },
+    {
+      "es": "Derechos Humanos",
+      "en": "Human Rights",
+      "fr": "Droits humains"
+    },
+    {
+      "es": "Plebiscito",
+      "en": "Plebiscite",
+      "fr": "Plébiscite"
+    },
+    {
+      "es": "Constitución",
+      "en": "Constitution",
+      "fr": "Constitution"
+    },
+    {
+      "es": "Derecho Social: Educación",
+      "en": "Social Right: Education",
+      "fr": "Droit social : Éducation"
+    },
+    {
+      "es": "Levantamiento Popular",
+      "en": "Popular Uprising",
+      "fr": "Soulèvement populaire"
+    },
+    {
+      "es": "Conmemoraciones",
+      "en": "Commemorations",
+      "fr": "Commémorations"
+    },
+    {
+      "es": "Movimiento Nacionalista",
+      "en": "Nationalist Movement",
+      "fr": "Mouvement nationaliste"
+    },
+    {
+      "es": "Derecho Social: Trabajo",
+      "en": "Social Right: Work",
+      "fr": "Droit social : Travail"
+    },
+    {
+      "es": "Género Feminismo y Disidencias",
+      "en": "Gender, Feminism and Dissidence",
+      "fr": "Genre, féminisme et dissidences"
+    },
+    {
+      "es": "Pueblos Originarios",
+      "en": "Indigenous Peoples",
+      "fr": "Peuples autochtones"
+    },
+    {
+      "es": "Derecho Social: Vivienda",
+      "en": "Social Right: Housing",
+      "fr": "Droit social : Logement"
+    },
+    {
+      "es": "Derecho Social: Pensiones",
+      "en": "Social Right: Pensions",
+      "fr": "Droit social : Retraites"
+    },
+    {
+      "es": "Derecho Social: Salud",
+      "en": "Social Right: Health",
+      "fr": "Droit social : Santé"
+    },
+    {
+      "es": "Candidaturas",
+      "en": "Candidacies",
+      "fr": "Candidatures"
+    },
+    {
+      "es": "Derecho Social: Ecología y Medioambiente",
+      "en": "Social Right: Ecology and Environment",
+      "fr": "Droit social : Écologie et environnement"
+    },
+    {
+      "es": "Allende",
+      "en": "Allende",
+      "fr": "Allende"
+    },
+    {
+      "es": "Derecho Social: Alimentación",
+      "en": "Social Right: Food",
+      "fr": "Droit social : Alimentation"
+    }
+  ],
+  "lugares": [
+    {
+      "es": "5 de abril con Las rejas, Santiago",
+      "en": "5 de abril at Las rejas, Santiago",
+      "fr": "5 de abril à l’angle de Las rejas, Santiago"
+    },
+    {
+      "es": "Alameda 309, Santiago",
+      "en": "309 Alameda, Santiago",
+      "fr": "309 Alameda, Santiago"
+    },
+    {
+      "es": "Alameda con Echaurren, Santiago",
+      "en": "Alameda at Echaurren, Santiago",
+      "fr": "Alameda à l’angle de Echaurren, Santiago"
+    },
+    {
+      "es": "Alameda con Las Rejas, Santiago",
+      "en": "Alameda at Las Rejas, Santiago",
+      "fr": "Alameda à l’angle de Las Rejas, Santiago"
+    },
+    {
+      "es": "Alameda con Matucana, Santiago",
+      "en": "Alameda at Matucana, Santiago",
+      "fr": "Alameda à l’angle de Matucana, Santiago"
+    },
+    {
+      "es": "Alameda con Portugal, Santiago",
+      "en": "Alameda at Portugal, Santiago",
+      "fr": "Alameda à l’angle de Portugal, Santiago"
+    },
+    {
+      "es": "Avenida Peru con Valdivieso, Santiago",
+      "en": "Avenida Peru at Valdivieso, Santiago",
+      "fr": "Avenida Peru à l’angle de Valdivieso, Santiago"
+    },
+    {
+      "es": "Bandejón central Avenida Matta, Santiago",
+      "en": "Central median of Avenida Matta, Santiago",
+      "fr": "Terre-plein central de l’Avenida Matta, Santiago"
+    },
+    {
+      "es": "Borgoño 1470, Santiago",
+      "en": "1470 Borgoño, Santiago",
+      "fr": "1470 Borgoño, Santiago"
+    },
+    {
+      "es": "Campus Juan Gomez Millas Universidad de Chile, Santiago",
+      "en": "Juan Gomez Millas Campus, Universidad de Chile, Santiago",
+      "fr": "Campus Juan Gomez Millas, Universidad de Chile, Santiago"
+    },
+    {
+      "es": "Cerro San Cristobal ingreso Pedro de Valdivia, Santiago",
+      "en": "Cerro San Cristobal, Pedro de Valdivia entrance, Santiago",
+      "fr": "Cerro San Cristobal, entrée Pedro de Valdivia, Santiago"
+    },
+    {
+      "es": "Cienfuegos 152, Santiago",
+      "en": "152 Cienfuegos, Santiago",
+      "fr": "152 Cienfuegos, Santiago"
+    },
+    {
+      "es": "Compañía 1263, Santiago",
+      "en": "1263 Compañía, Santiago",
+      "fr": "1263 Compañía, Santiago"
+    },
+    {
+      "es": "Edificio Diego Portales / GAM, Santiago",
+      "en": "Diego Portales / GAM Building, Santiago",
+      "fr": "Bâtiment Diego Portales / GAM, Santiago"
+    },
+    {
+      "es": "Escuela básica pública Héroes de Yungay, Santiago",
+      "en": "Héroes de Yungay Public Primary School, Santiago",
+      "fr": "École primaire publique Héroes de Yungay, Santiago"
+    },
+    {
+      "es": "Escuela de Derecho Universidad de Chile, Santiago",
+      "en": "Universidad de Chile Law School, Santiago",
+      "fr": "École de droit de l’Universidad de Chile, Santiago"
+    },
+    {
+      "es": "Escuela de ingeniería Universidad de Chile, Santiago",
+      "en": "Universidad de Chile School of Engineering, Santiago",
+      "fr": "École d’ingénierie de l’Universidad de Chile, Santiago"
+    },
+    {
+      "es": "Escuela Militar, Santiago",
+      "en": "Escuela Militar, Santiago",
+      "fr": "Escuela Militar, Santiago"
+    },
+    {
+      "es": "Estación Francia Metro de Valparaíso, Valparaíso",
+      "en": "Francia Station, Metro de Valparaíso, Valparaíso",
+      "fr": "Station Francia, Metro de Valparaíso, Valparaíso"
+    },
+    {
+      "es": "Estación Mapocho, Santiago",
+      "en": "Estación Mapocho, Santiago",
+      "fr": "Estación Mapocho, Santiago"
+    },
+    {
+      "es": "Estadio Nacional, Santiago",
+      "en": "Estadio Nacional, Santiago",
+      "fr": "Estadio Nacional, Santiago"
+    },
+    {
+      "es": "Estadio Santa Laura, Santiago",
+      "en": "Santa Laura Stadium, Santiago",
+      "fr": "Stade Santa Laura, Santiago"
+    },
+    {
+      "es": "Gimnasio Nataniel, Santiago",
+      "en": "Nataniel Gymnasium, Santiago",
+      "fr": "Gymnase Nataniel, Santiago"
+    },
+    {
+      "es": "Hospital Militar, Santiago",
+      "en": "Hospital Militar, Santiago",
+      "fr": "Hospital Militar, Santiago"
+    },
+    {
+      "es": "Liceo José Victorino Lastarria, Santiago",
+      "en": "Liceo José Victorino Lastarria, Santiago",
+      "fr": "Liceo José Victorino Lastarria, Santiago"
+    },
+    {
+      "es": "Metro Tobalaba, Santiago",
+      "en": "Tobalaba Metro Station, Santiago",
+      "fr": "Station de métro Tobalaba, Santiago"
+    },
+    {
+      "es": "Museo de Bellas Artes, Santiago",
+      "en": "Museo de Bellas Artes, Santiago",
+      "fr": "Museo de Bellas Artes, Santiago"
+    },
+    {
+      "es": "O`Brien 2244 Vitacura, Santiago",
+      "en": "2244 O`Brien, Vitacura, Santiago",
+      "fr": "2244 O`Brien, Vitacura, Santiago"
+    },
+    {
+      "es": "Panamericana con Carlos Valdovinos, Santiago",
+      "en": "Panamericana at Carlos Valdovinos, Santiago",
+      "fr": "Panamericana à l’angle de Carlos Valdovinos, Santiago"
+    },
+    {
+      "es": "Parque Forestal, Santiago",
+      "en": "Forestal Park, Santiago",
+      "fr": "Parc Forestal, Santiago"
+    },
+    {
+      "es": "Parque O’Higgins, Santiago",
+      "en": "O’Higgins Park, Santiago",
+      "fr": "Parc O’Higgins, Santiago"
+    },
+    {
+      "es": "Plaza Baquedano / Italia / Dignidad, Santiago",
+      "en": "Baquedano / Italia / Dignidad Square, Santiago",
+      "fr": "Place Baquedano / Italia / Dignidad, Santiago"
+    },
+    {
+      "es": "Plaza de Armas, Concepción",
+      "en": "Plaza de Armas, Concepción",
+      "fr": "Plaza de Armas, Concepción"
+    },
+    {
+      "es": "Plaza de Armas, Santiago",
+      "en": "Plaza de Armas, Santiago",
+      "fr": "Plaza de Armas, Santiago"
+    },
+    {
+      "es": "Plaza de la Constitución, Santiago",
+      "en": "Constitución Square, Santiago",
+      "fr": "Place de la Constitución, Santiago"
+    },
+    {
+      "es": "Teatro Cariola, Santiago",
+      "en": "Cariola Theater, Santiago",
+      "fr": "Théâtre Cariola, Santiago"
+    },
+    {
+      "es": "Teatro Caupolicán, Santiago",
+      "en": "Caupolicán Theater, Santiago",
+      "fr": "Théâtre Caupolicán, Santiago"
+    },
+    {
+      "es": "Teatro Universidad de Chile, Santiago",
+      "en": "Universidad de Chile Theater, Santiago",
+      "fr": "Théâtre Universidad de Chile, Santiago"
+    },
+    {
+      "es": "Universidad de Santiago de Chile, Santiago",
+      "en": "Universidad de Santiago de Chile, Santiago",
+      "fr": "Universidad de Santiago de Chile, Santiago"
+    },
+    {
+      "es": "Universidad Tecnológica Metropolitana sede Macul, Santiago",
+      "en": "Universidad Tecnológica Metropolitana, Macul Campus, Santiago",
+      "fr": "Universidad Tecnológica Metropolitana, campus Macul, Santiago"
+    },
+    {
+      "es": "Vicuña Mackenna con Marcoleta, Santiago",
+      "en": "Vicuña Mackenna at Marcoleta, Santiago",
+      "fr": "Vicuña Mackenna à l’angle de Marcoleta, Santiago"
+    }
+  ]
+}
