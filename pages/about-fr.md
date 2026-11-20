@@ -30,3 +30,7 @@ Le site permet d’explorer la collection à partir des contenus, des caractéri
 Plus qu’un ensemble d’images du passé, cette archive numérique ouvre de nouvelles perspectives pour observer, comprendre et reconstruire la mémoire collective à partir des expressions graphiques qui ont habité nos rues.
 
 **Car une part importante de l’histoire politique et visuelle du Chili s’est aussi écrite sur de petits morceaux de papier, un jour passés de main en main.**
+
+---
+
+<p class="small text-muted mt-3" style="text-align: left;">Ce site a été développé à partir de <a href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, un outil libre de l’Université de l’Idaho, et est hébergé sur <a href="https://pages.github.com/">GitHub Pages</a>.</p>

@@ -16,16 +16,5 @@
       {% if site.organization-logo-nav %}<p class="text-md-end"><a href="{{ site.organization-link }}"><img id="footer-logo" class="img-fluid" src="{{ site.organization-logo-nav | relative_url }}" alt="{{ site.organization-name | escape }}"></a></p>{% endif %}
     </div>
   </div>
-  <div class="col-md-12 text-center pt-3 px-3">
-    <p class="text-white-50 small mb-1">
-      {% if page.lang == 'en' %}
-        This website was developed using <a class="link-light" href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, an open-source tool from the University of Idaho, and is hosted on <a class="link-light" href="https://pages.github.com/">GitHub Pages</a>.
-      {% elsif page.lang == 'fr' %}
-        Ce site a été développé à partir de <a class="link-light" href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, un outil libre de l’Université de l’Idaho, et est hébergé sur <a class="link-light" href="https://pages.github.com/">GitHub Pages</a>.
-      {% else %}
-        Este sitio fue desarrollado a partir de <a class="link-light" href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, una herramienta de código abierto de la Universidad de Idaho, y se encuentra alojado en <a class="link-light" href="https://pages.github.com/">GitHub Pages</a>.
-      {% endif %}
-    </p>
-  </div>
   <div class="col-md-12 text-center pt-3 pb-1"><p class="text-white">{% if page.lang == 'en' %}Last updated:{% elsif page.lang == 'fr' %}Dernière mise à jour :{% else %}Última actualización:{% endif %} {{ site.time | date: '%Y' }}</p></div>
 </footer>

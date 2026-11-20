@@ -30,3 +30,7 @@ Visitors can explore the collection through its contents, material characteristi
 More than a collection of images from the past, this digital archive opens up new ways to observe, understand, and reconstruct collective memory through the graphic expressions that have inhabited our streets.
 
 **Because an important part of Chile’s political and visual history was also written on small pieces of paper, once passed from hand to hand.**
+
+---
+
+<p class="small text-muted mt-3" style="text-align: left;">This website was developed using <a href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, an open-source tool from the University of Idaho, and is hosted on <a href="https://pages.github.com/">GitHub Pages</a>.</p>

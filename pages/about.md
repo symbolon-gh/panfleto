@@ -28,3 +28,7 @@ El sitio permite explorar la colección a partir de sus contenidos, característ
 Más que reunir imágenes del pasado, este archivo digital busca abrir nuevas posibilidades para observar, comprender y reconstruir la memoria colectiva desde las expresiones gráficas que han habitado nuestras calles.
 
 **Porque una parte importante de la historia política y visual de Chile también se ha escrito en pequeños papeles que alguna vez circularon de mano en mano.**
+
+---
+
+<p class="small text-muted mt-3" style="text-align: left;">Este sitio fue desarrollado a partir de <a href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, una herramienta de código abierto de la Universidad de Idaho, y se encuentra alojado en <a href="https://pages.github.com/">GitHub Pages</a>.</p>
