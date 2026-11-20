@@ -29,9 +29,9 @@ Más que reunir imágenes del pasado, este archivo digital busca abrir nuevas po
 
 **Porque una parte importante de la historia política y visual de Chile también se ha escrito en pequeños papeles que alguna vez circularon de mano en mano.**
 
-<div class="mt-4 mb-4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;" aria-label="Financiamiento">
-  <img src="{{ '/assets/img/logo-mincap.svg' | relative_url }}" alt="Logotipo del Ministerio de las Culturas, las Artes y el Patrimonio de Chile" width="125" height="120" loading="lazy" style="max-width: 100%; height: auto; flex: 0 0 auto;">
-  <div style="flex: 1 1 260px; text-align: justify; text-justify: inter-word;">
+<div class="mt-4 mb-4" style="width: 100%; max-width: 100%; box-sizing: border-box;" aria-label="Financiamiento">
+  <img src="{{ '/assets/img/logo-mincap.svg' | relative_url }}" alt="Logotipo del Ministerio de las Culturas, las Artes y el Patrimonio de Chile" width="150" height="144" loading="lazy" style="display: block; width: 150px; max-width: 100%; height: auto; margin-bottom: 1rem;">
+  <div style="width: 100%; max-width: 100%; text-align: justify; text-justify: inter-word;">
     <p class="mb-1"><strong>Financiamiento</strong></p>
     <p class="mb-0">Este proyecto es financiado por el Fondo Nacional de Desarrollo Cultural y las Artes (Fondart Nacional), línea Investigación, Grupo A (Artes de la visualidad), Convocatoria 2026, del Ministerio de las Culturas, las Artes y el Patrimonio de Chile.</p>
   </div>
