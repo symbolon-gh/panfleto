@@ -31,7 +31,7 @@ Plus qu’un ensemble d’images du passé, cette archive numérique ouvre de no
 
 **Car une part importante de l’histoire politique et visuelle du Chili s’est aussi écrite sur de petits morceaux de papier, un jour passés de main en main.**
 
-<div class="mt-4 mb-4" style="width: 100%; max-width: 100%; box-sizing: border-box;" aria-label="Financement">
+<div class="mt-4 mb-4 narrow-content" style="width: 100%; max-width: 750px; box-sizing: border-box;" aria-label="Financement">
   <img src="{{ '/assets/img/logo-mincap.svg' | relative_url }}" alt="Logo du ministère des Cultures, des Arts et du Patrimoine du Chili" width="150" height="144" loading="lazy" style="display: block; width: 150px; max-width: 100%; height: auto; margin-bottom: 1rem;">
   <div style="width: 100%; max-width: 100%; text-align: justify; text-justify: inter-word;">
     <p class="mb-1"><strong>Financement</strong></p>
