@@ -31,6 +31,14 @@ More than a collection of images from the past, this digital archive opens up ne
 
 **Because an important part of Chile’s political and visual history was also written on small pieces of paper, once passed from hand to hand.**
 
+<div class="mt-4 mb-4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;" aria-label="Funding">
+  <img src="{{ '/assets/img/logo-mincap.svg' | relative_url }}" alt="Logo of Chile’s Ministry of Cultures, Arts and Heritage" width="125" height="120" loading="lazy" style="max-width: 100%; height: auto; flex: 0 0 auto;">
+  <div style="flex: 1 1 260px; text-align: left;">
+    <p class="mb-1"><strong>Funding</strong></p>
+    <p class="mb-0">This project is funded by Chile’s National Fund for Cultural and Artistic Development (Fondart Nacional), Research programme, Group A (Visual Arts), 2026 call, under the Ministry of Cultures, Arts and Heritage of Chile.</p>
+  </div>
+</div>
+
 ---
 
 <p class="small text-muted mt-3" style="text-align: left;">This website was developed using <a href="https://collectionbuilder.github.io/">CollectionBuilder-CSV</a>, an open-source tool from the University of Idaho, and is hosted on <a href="https://pages.github.com/">GitHub Pages</a>.</p>
