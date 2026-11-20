@@ -33,7 +33,7 @@ Plus qu’un ensemble d’images du passé, cette archive numérique ouvre de no
 
 <div class="mt-4 mb-4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;" aria-label="Financement">
   <img src="{{ '/assets/img/logo-mincap.svg' | relative_url }}" alt="Logo du ministère des Cultures, des Arts et du Patrimoine du Chili" width="125" height="120" loading="lazy" style="max-width: 100%; height: auto; flex: 0 0 auto;">
-  <div style="flex: 1 1 260px; text-align: left;">
+  <div style="flex: 1 1 260px; text-align: justify; text-justify: inter-word;">
     <p class="mb-1"><strong>Financement</strong></p>
     <p class="mb-0">Ce projet bénéficie du financement du Fonds national pour le développement culturel et artistique du Chili (Fondart Nacional), programme Recherche, groupe A (Arts visuels), appel à projets 2026, du ministère des Cultures, des Arts et du Patrimoine du Chili.</p>
   </div>
